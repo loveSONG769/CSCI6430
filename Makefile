@@ -1,10 +1,10 @@
 OSHCC = oshcc
 CFLAGS = 
-all: openShmem
+all: openSh
 
-openShmem: openShmem.c
-	${OSHCC} ${CFLAGS} -o openShmem openShmem.c
+openShmem: openSh.c
+	${OSHCC} ${CFLAGS} -o openSh openSh.c
 
 clean:
-	rm openShmem
+	rm openSh
 	rm *~
