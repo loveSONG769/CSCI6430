@@ -72,6 +72,10 @@ int main(){
     while(1){
       for(int i=1;i<n_pes; i++){
 	if(shared[i][0]==1){
+	  printf("Receive from PE: %d, Message:%s\n",i,shared[i][0]+1);
+          share[i][0] = 0;
+          count++;
+
 	}
       }
       if(count == n_pes - 1) break;
@@ -85,11 +89,18 @@ int main(){
       {
       key_t mykey = ftok(name[0],0);
       if(mykey == -1){
+	perror("ftok falied: ");
+	return -1;
       }
 
       if(shared == -1){
+	perror("Shared Memory Failed: ");
+        return -1;
       }
       if(sharedPE==(char*)-1){
+	perror("shmat: ");
+        return -1;
+
 	}
    
       shmdt(sharedPE);
