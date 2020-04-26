@@ -63,7 +63,11 @@ int main(){
   
 
   if(my_pe == 0){ 
-   for(int i=0;i<n_pes;i++){
+    printf("Main process my_pe:%d\n",my_pe);
+    for(int i=0;i<n_pes;i++){
+     if(i!=my_pe)
+       printf("%d ,name[%d] : %s\n",my_pe,i,name[i]);
+   }
     int count = 0;
     while(1){
       for(int i=1;i<n_pes; i++){
