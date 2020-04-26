@@ -25,7 +25,20 @@ int main(){
   
   //shared memory
   char** shared;
-  
+  shared = (char**)malloc(n_pes*sizeof(char*));
+
+  name = (char**)malloc(n_pes*sizeof(char*));
+  for(int i=0;i<n_pes;i++){
+    name[i] = (char *)malloc(NAME_SIZE*sizeof(char));
+  }
+
+  for(int i=0;i<my_pe;i++){
+    sprintf(name[i],"%d..%d",i,my_pe);
+  }
+  for(int i=my_pe+1;i<n_pes;i++){
+    sprintf(name[i],"%d..%d",my_pe,i);
+  }
+
   //assign the memory for shared space
   
   //assign the memory for name
