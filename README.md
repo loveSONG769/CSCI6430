@@ -8,4 +8,4 @@ hand make some opensheme similar functions to do what opensheme functions do.
 how to run:
 in the terminal, type
 (1)make
-(2)mpirun -np $(number of PE) ./*.exe
+(2)mpirun -np 2 ./*.exe
