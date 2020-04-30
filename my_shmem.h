@@ -73,24 +73,16 @@ int shmem_my_pe()
 
 void* shmem_malloc(size_t size)
 {
-
-  keys.blockIndex++;
   key_t intKey=keys.key[keys.blockIndex];
+  keys.blockIndex++;
 
-
-  keys.shmemIndex[keys.blockIndex] = shmget(intKey, shmem_n_pes()*size, 0666|IPC_CREAT);
-
-  if(keys.shmemIndex[keys.blockIndex]==-1)
-    {
-      perror("share memory failed:");
-      return NULL;
-    }
-
+  keys.shmemIndex[keys.blockIndex] = shmget(intKey, shmem_n_pes()*size,0666|IPC_CREAT);
   keys.sharedMem[keys.blockIndex] = malloc(shmem_n_pes()*size);
   keys.sharedMem[keys.blockIndex] = shmat(keys.shmemIndex[keys.blockIndex], NULL, 0);
 
-
+ 
   return (keys.sharedMem[keys.blockIndex] + shmem_my_pe()*size);
+  
 }
 
 
@@ -98,33 +90,34 @@ void shmem_int_get(int* target, int* source, int length, int pe)
 {  
   if(shmem_my_pe()==pe)
     {
-    if(length==1)
-      {
-      *target=*source;
-    }
-    else
-      {
-      for(int i=0;i<length;i++)
+      if(length==1)
 	{
-	*(target+i)=*(source+i);
-      }
+	  *target=*source;
+	}
+      else
+	{
+	  for(int i=0;i<length;i++)
+	    {
+	      *(target+i)=*(source+i);
+	    }
+	}
     }
-  }
   else
     {
-    
-    if(length==1)
-      {
-      *target=*(source+pe-shmem_my_pe());
-    }
-    else
-      {
-      for(int i=0;i<length;i++)
+
+      if(length==1)
 	{
-	*(target+i)=*(source+i);
-      }
+	  *target=*(source+pe-shmem_my_pe());
+	}
+      else
+	{
+	  for(int i=0;i<length;i++)
+	    {
+	      *(target+i)=*(source+i);
+	    }
+	}
     }
-  }
+  
 
 }
 
@@ -222,7 +215,3 @@ void shmem_putmem(void *destination, void *source, size_t length, int pe)
 void shmem_free(void *ptr){
   ptr = NULL;
 }
-
-
-
-
